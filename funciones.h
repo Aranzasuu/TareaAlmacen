@@ -15,7 +15,7 @@ typedef struct Producto
     char *Marca;
     char *Tipo;
     size_t stock, precio;
-    size_t cantCompra, precioCompra;
+    size_t cantCompra;
 }Producto;
 
 typedef struct Carrito
@@ -62,6 +62,8 @@ void mostrarCarritos(List *carritos);
 void EliminarDelCarrito(List* carritos);
 
 void ConcretarCompra(Map* nombre, List* carritos);
+
+void mostrarProdCarrito(List *auxCarrito, Map *nombre);
 
 void exportar(Map *mapNom);
 

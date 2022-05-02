@@ -124,7 +124,7 @@ void ImprimirMenu(Almacen *inventario, FILE *archivo)
                 EliminarDelCarrito(inventario->Carritos);
                 break;
             case 8:
-                //ConcretarCompra(inventario->Nombre, inventario->Carritos);
+                ConcretarCompra(inventario->Nombre, inventario->Carritos);
                 break;
             case 9:
                 mostrarCarritos(inventario->Carritos);
@@ -156,7 +156,6 @@ Producto* crearProducto()
     productoUnitario->precio = 0;
     productoUnitario->stock = 0;
     productoUnitario->cantCompra = 0;
-    productoUnitario->precioCompra = 0;
     
     return productoUnitario;
 }
@@ -418,18 +417,22 @@ void EliminarDelCarrito(List *carritos)
 
     char *nomCarrito = (char *)malloc(sizeof(char) * 50);
     getchar();
-    scanf("%[^\n]s", nomCarrito);
+    scanf("%[^/n]s", nomCarrito);
 
     Carrito *auxCarrito = firstList(carritos);
+    mostrarProdCarrito(auxCarrito);
     if (auxCarrito != NULL)
     {
         while (auxCarrito != NULL)
         {
             if (strcmp(auxCarrito->nombre, nomCarrito) == 0)
             {
-                printf("si\n");
+                Producto *last = firstList(auxCarrito->compras);
+                auxCarrito->cantidad -= last->cantCompra;
+                auxCarrito->total -= last->precio * last->stock;
                 popFront(auxCarrito->compras);
-                break;
+                // printf("Se eliminaron %d unidad/de de '%s' del carrito '%s'", last->stock, last->nombre, auxCarrito->nombre);
+                return;
             }
             auxCarrito = nextList(carritos);
         }
@@ -510,8 +513,9 @@ void agregarAlCarrito(Map *nombre, List *carritos)
                 strcpy(cpyProd->Nombre, auxProd->Nombre);
                 strcpy(cpyProd->Marca, auxProd->Marca);
                 strcpy(cpyProd->Tipo, auxProd->Tipo);
-                cpyProd->stock = numero(cant);
+                cpyProd->stock = auxProd->stock;
                 cpyProd->precio = auxProd->precio;
+                cpyProd->cantCompra = numero(cant);
 
                 auxCarrito->cantidad += numero(cant);
                 auxCarrito->total += auxProd->precio * numero(cant);
@@ -520,6 +524,7 @@ void agregarAlCarrito(Map *nombre, List *carritos)
                 printf("Se agregaron %s unidad/es de '%s' al carrito '%s'\n", cant, cpyProd->Nombre, auxCarrito->nombre);
                 return;
             }
+            auxCarrito = nextList(carritos);
         }
     }
     else
@@ -531,8 +536,9 @@ void agregarAlCarrito(Map *nombre, List *carritos)
         strcpy(cpyProd->Nombre, auxProd->Nombre);
         strcpy(cpyProd->Marca, auxProd->Marca);
         strcpy(cpyProd->Tipo, auxProd->Tipo);
-        cpyProd->stock = numero(cant);
+        cpyProd->stock = auxProd->stock;
         cpyProd->precio = auxProd->precio;
+        cpyProd->cantCompra = numero(cant);
 
         auxCarrito->cantidad += numero(cant);
         auxCarrito->total += auxProd->precio * numero(cant);
@@ -550,8 +556,9 @@ void agregarAlCarrito(Map *nombre, List *carritos)
     strcpy(cpyProd->Nombre, auxProd->Nombre);
     strcpy(cpyProd->Marca, auxProd->Marca);
     strcpy(cpyProd->Tipo, auxProd->Tipo);
-    cpyProd->stock = numero(cant);
+    cpyProd->stock = auxProd->stock;
     cpyProd->precio = auxProd->precio;
+    cpyProd->cantCompra = numero(cant);
 
     auxCarrito->cantidad += numero(cant);
     auxCarrito->total += auxProd->precio * numero(cant);
@@ -561,24 +568,54 @@ void agregarAlCarrito(Map *nombre, List *carritos)
     printf("Se agregaron %s unidad/es de '%s' al carrito '%s'\n", cant, cpyProd->Nombre, auxCarrito->nombre);
 }
 
-/*
-void ConcretarCompra(Map* nombre, List* carritos){
-    char* nomCarrito = (char *)malloc(sizeof(char ) *50);
-    getchar();
-    scanf("%[^\n]s", nomCarrito);
+void mostrarProdCarrito(List *carritos, Map *nombre){
+    Carrito *carrito = firstList(carritos);
+    while (carrito != NULL)
+        {
+            printf("\n");
+            Producto *aux = firstList(carrito->compras);
+            while(aux != NULL){
+                Producto *buscado = searchMap(nombre, aux->Nombre);
+                printf("nombre: %s\n", aux->Nombre);
+                printf("Cantidad a comprar: %zd\n\n", aux->cantCompra);
+                buscado->stock = (buscado->stock) - (aux->cantCompra);
+                aux = nextList(carrito->compras);
+            }
+            printf("\nCantidad de productos : %d", carrito->cantidad);
+            carrito = nextList(carritos);
+            return;
+        }
+    printf("\n----------------------------------\n");
+}
 
+
+void ConcretarCompra(Map* nombre, List* carritos){
+    char* nomCarrito = (char *)malloc(sizeof(char) * 50);
+    getchar();
+    printf("Ingrese el nombre del último carrito creado carrito: ");
+    scanf("%[^\n]s", nomCarrito);
+    char producto;
     Carrito* auxCarrito = firstList(carritos);
     if (auxCarrito != NULL){
         while (auxCarrito != NULL)
         {
             if (strcmp(auxCarrito->nombre, nomCarrito) == 0){
-
+                printf("Debe pagar el total de $ %d", auxCarrito->total);
+                printf("\n----------------------------------\n");
+                mostrarProdCarrito(carritos, nombre);
+                printf("\n----------------------------------\n");
+                popCurrent(carritos);
+                return;
             }
-
+            nextList(carritos);
         }
 
     }
-*/
+    if (auxCarrito == NULL){
+        printf("El carrito que desea pagar no existe");
+        return;
+    }
+}
 
 void exportar(Map *mapNom)
 {
