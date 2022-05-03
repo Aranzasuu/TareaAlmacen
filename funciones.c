@@ -91,7 +91,7 @@ void ImprimirMenu(Almacen *inventario, FILE *archivo)
                 importar(archivo, inventario);
                 break;
             case 2:
-                exportar(inventario->Nombre);    // esto hay que arreglar
+                exportar(inventario->Nombre);
                 break; 
             case 3:
                 printf("\n\n\n\n\n-> opcion 1. Tipo\n");
@@ -121,10 +121,10 @@ void ImprimirMenu(Almacen *inventario, FILE *archivo)
                 agregarAlCarrito(inventario->Nombre, inventario->Carritos);
                 break;
             case 7:
-                EliminarDelCarrito(inventario->Carritos);   // esto hay que arreglar
+                EliminarDelCarrito(inventario->Carritos);
                 break;
             case 8:
-                ConcretarCompra(inventario->Nombre, inventario->Carritos);   // hay que revisar
+                ConcretarCompra(inventario->Nombre, inventario->Carritos);
                 break;
             case 9:
                 mostrarCarritos(inventario->Carritos);
@@ -536,7 +536,6 @@ void agregarAlCarrito(Map *nombre, List *carritos)
                 auxCarrito->cantidad += numero(cant);
                 auxCarrito->total += auxProd->precio * numero(cant);
                 pushBack(auxCarrito->compras, cpyProd);
-                // pushFront(carritos, auxCarrito);
                 printf("Se agregaron %s unidad/es de '%s' al carrito '%s'\n", cant, cpyProd->Nombre, auxCarrito->nombre);
                 return;
             }
