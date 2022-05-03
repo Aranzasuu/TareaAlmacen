@@ -417,6 +417,23 @@ void EliminarDelCarrito(List *carritos)
 
     char *nomCarrito = (char *)malloc(sizeof(char) * 50);
     getchar();
+    scanf("%[^\n]s", nomCarrito);
+
+    Carrito *auxCarrito = firstList(carritos);
+    if (auxCarrito == NULL){
+      printf("El carrito no existe");
+    }
+    popBack(auxCarrito->compras);    
+    printf("el ultimo producto fue eliminado");
+}
+
+/*void EliminarDelCarrito(List *carritos)
+{
+    printf("Se eliminara el ultimo elemento del siguiente carrito\n");
+    printf("Ingrese nombre del carrito : ");
+
+    char *nomCarrito = (char *)malloc(sizeof(char) * 50);
+    getchar();
     scanf("%[^/n]s", nomCarrito);
 
     Carrito *auxCarrito = firstList(carritos);
@@ -428,7 +445,7 @@ void EliminarDelCarrito(List *carritos)
             {
                 Producto *last = lastList(auxCarrito->compras);
                 auxCarrito->cantidad -= last->cantCompra;
-                auxCarrito->total -= last->precio * last->stock;
+                auxCarrito->total -= last->precio * last->cantCompra;
                 popBack(auxCarrito->compras);
                 // printf("Se eliminaron %d unidad/de de '%s' del carrito '%s'", last->stock, last->nombre, auxCarrito->nombre);
                 return;
@@ -441,7 +458,7 @@ void EliminarDelCarrito(List *carritos)
     {
         printf("Aun no se ha creado ningun carrito\n");
     }
-}
+}*/
 
 void mostrarCarritos(List *carritos)
 {
@@ -614,21 +631,7 @@ void ConcretarCompra(Map* nombre, List* carritos){
     }
 }
 
-void exportar(Map *nombre){
-    //FILE *exportFile = fopen("final.csv","w+");
-
-    //if(exportFile == NULL){
-    //    printf("No se pudo abrir el archivo\n");
-    //    return(EXIT_FAILURE);
-    //}
-
-    //Producto *aux = firstList();
-    //while(aux != NULL){
-
-    //}
-}
-
-/*void exportar(Map *mapNom)
+void exportar(Map *mapNom)
 {
     char *linea;
     linea = (char *) malloc(sizeof(char) * 100000);
@@ -653,10 +656,7 @@ void exportar(Map *nombre){
                     break;
 
                 case 3:
-                    (char *) prod->stock;
-                    //prod->stock = numero(linea);
-                    strcat(linea, prod->stock);
-                    printf("linea = %s\n", prod->stock);
+                    prod->stock = numero(linea);
                     break;
                 case 4:
                     prod->precio = numero(linea);
@@ -669,4 +669,4 @@ void exportar(Map *nombre){
     }
     fprintf(exportFile, "%s\n", linea);
     fclose(exportFile);
-}*/
+}
