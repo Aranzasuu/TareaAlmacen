@@ -432,9 +432,10 @@ void EliminarDelCarrito(List *carritos)
     printf("Se eliminara el ultimo elemento del siguiente carrito\n");
     printf("Ingrese nombre del carrito : ");
 
-    char *nomCarrito = (char *)malloc(sizeof(char) * 50);
+    char *nomCarrito = (char *) malloc(sizeof(char) * 50);
     getchar();
     scanf("%[^/n]s", nomCarrito);
+    printf("nombre car = %s\n", nomCarrito);
 
     Carrito *auxCarrito = firstList(carritos);
     if (auxCarrito != NULL)
@@ -447,7 +448,7 @@ void EliminarDelCarrito(List *carritos)
                 auxCarrito->cantidad -= last->cantCompra;
                 auxCarrito->total -= last->precio * last->cantCompra;
                 popBack(auxCarrito->compras);
-                // printf("Se eliminaron %d unidad/de de '%s' del carrito '%s'", last->stock, last->nombre, auxCarrito->nombre);
+                printf("Se eliminaron %d unidad/de de '%s' del carrito '%s'", last->cantCompra, last->Nombre, auxCarrito->nombre);
                 return;
             }
             auxCarrito = nextList(carritos);
