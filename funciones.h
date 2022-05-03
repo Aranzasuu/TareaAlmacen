@@ -63,7 +63,7 @@ void EliminarDelCarrito(List* carritos);
 
 void ConcretarCompra(Map* nombre, List* carritos);
 
-void mostrarProdCarrito(List *auxCarrito, Map *nombre);
+void mostrarProdCarrito(Carrito *auxCarrito, Map *nombre);
 
 void exportar(Map *mapNom);
 

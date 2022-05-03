@@ -8,12 +8,13 @@
 
 int main()
 {   
-    /*char *NombreArchivo;
+    /*char *NomArchivo;
     printf("Ingrese el nombre del archivo: ");
-    scanf("%s", NombreArchivo);*/
-    //FILE *archivo = fopen(NombreArchivo,"r");
+    scanf("%s", NomArchivo);
+    printf("nombre archivo = %s\n", NomArchivo);
+    FILE *archivo = fopen(NomArchivo, "r");*/
 
-    FILE *archivo = fopen("Archivo_100productos.csv","r");
+    FILE *archivo = fopen("Archivoproductos.csv","r");
 
     if(archivo == NULL)
     {
